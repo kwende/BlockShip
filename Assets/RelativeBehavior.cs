@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RelativeBehavior : MonoBehaviour
 {
@@ -25,8 +26,7 @@ public class RelativeBehavior : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void UpdateGameCubeVisuals()
     {
         bool looksGood = true; 
 
@@ -103,6 +103,11 @@ public class RelativeBehavior : MonoBehaviour
             _stateIsGood = false; 
             UpdateBlocks(false);
         }
-        _counter++; 
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        UpdateGameCubeVisuals();
     }
 }
