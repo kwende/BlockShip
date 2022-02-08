@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq; 
+using System.Text; 
 
 public class RelativeBehavior : MonoBehaviour
 {
+    private Dictionary<string,Vector3> _blockCoordinates = new Dictionary<string,Vector3>(); 
     private int _counter; 
     private bool _stateIsGood = false; 
     // Start is called before the first frame update
     void Start()
     {
-        //Debug.Log("Googliebah!");
         _counter  = 0; 
         _stateIsGood = false; 
+
+        UpdateBlockCoordinateCache(); 
     }
 
     private void UpdateBlocks(bool stateIsGood)
@@ -24,6 +28,44 @@ public class RelativeBehavior : MonoBehaviour
             Material material = Resources.Load<Material>($"{materialPrefix}{i}");
             GameObject.Find($"Cube{i}").GetComponent<MeshRenderer>().material = material; 
         }
+    }
+
+    private void UpdateBlockCoordinateCache()
+    {
+        _blockCoordinates.Clear(); 
+        for(int i=0;i<9;i++)
+        {
+            string name = $"Cube{i}"; 
+            GameObject obj = GameObject.Find(name); 
+            _blockCoordinates.Add(name, obj.transform.position); 
+        }
+    }
+
+    private void SetToBlockCoordinateCache()
+    {
+        List<GameObject> objects = new List<GameObject>(); 
+
+        // enumerate, and get objects out of the way
+        for(int i=1;i<=9;i++)
+        {
+            string cubeName = $"Cube{i}";
+            GameObject obj = GameObject.Find($"Cube{i}"); 
+            obj.GetComponent<Rigidbody>().useGravity = false; 
+            obj.transform.position = obj.transform.position * 1000; 
+            objects.Add(obj); 
+        }
+
+        objects = objects.OrderBy(n=>n.transform.position.y).ToList(); 
+
+        StringBuilder sb = new StringBuilder(); 
+        foreach(GameObject obj in objects)
+        {
+            sb.AppendLine($"Sending {obj.name} to {_blockCoordinates[obj.name]}"); 
+            obj.transform.position = _blockCoordinates[obj.name]; 
+            obj.GetComponent<Rigidbody>().useGravity = true; 
+        }
+
+        Debug.Log(sb.ToString());
     }
 
     void UpdateGameCubeVisuals()
@@ -49,7 +91,6 @@ public class RelativeBehavior : MonoBehaviour
                     // this was just decided experimentally
                     if(offsetVector.magnitude > .6)
                     {
-                        Debug.Log($"GOOGLIEBAH: Failed! {cubeName} magnitude is {offsetVector.magnitude}"); 
                         looksGood = false; 
                     }
                     else
@@ -65,22 +106,18 @@ public class RelativeBehavior : MonoBehaviour
 
                         if((desiredXOffsetSign != 0 && xActualOffsetSign != desiredXOffsetSign))
                         {
-                            Debug.Log($"GOOGLIEBAH: Failed! {cubeName} x offset is {xActualOffsetSign}, expected {desiredXOffsetSign}");
                             looksGood = false; 
                         }
                         else if(desiredYOffsetSign != 0 && yActualOffsetSign != desiredYOffsetSign)
                         {
-                            Debug.Log($"GOOGLIEBAH: Failed! {cubeName} y offset is {yActualOffsetSign}, expected {desiredYOffsetSign}");
                             looksGood = false; 
                         }
                         else if(desiredYOffsetSign == 0 && Mathf.Abs(offsetVector.y) > .04)
                         {
-                            Debug.Log($"GOOGLIEBAH: Failed! {cubeName} y offset is {offsetVector.y}, expected < {.04}");
                             looksGood = false; 
                         }
                         else if(desiredXOffsetSign == 0 && Mathf.Abs(offsetVector.z) > .04)
                         {
-                            Debug.Log($"GOOGLIEBAH: Failed! {cubeName} y offset is {offsetVector.y}, expected < {.04}");
                             looksGood = false; 
                         }
                     }
@@ -108,6 +145,13 @@ public class RelativeBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateGameCubeVisuals();
+        if(OVRInput.Get(OVRInput.Button.One))
+        {
+            SetToBlockCoordinateCache(); 
+        }
+        else
+        {
+            UpdateGameCubeVisuals();
+        }
     }
 }
