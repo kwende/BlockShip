@@ -15,8 +15,6 @@ public class RelativeBehavior : MonoBehaviour
     {
         _counter  = 0; 
         _stateIsGood = false; 
-
-        UpdateBlockCoordinateCache(); 
     }
 
     private void UpdateBlocks(bool stateIsGood)
@@ -39,33 +37,6 @@ public class RelativeBehavior : MonoBehaviour
             GameObject obj = GameObject.Find(name); 
             _blockCoordinates.Add(name, obj.transform.position); 
         }
-    }
-
-    private void SetToBlockCoordinateCache()
-    {
-        List<GameObject> objects = new List<GameObject>(); 
-
-        // enumerate, and get objects out of the way
-        for(int i=1;i<=9;i++)
-        {
-            string cubeName = $"Cube{i}";
-            GameObject obj = GameObject.Find($"Cube{i}"); 
-            obj.GetComponent<Rigidbody>().useGravity = false; 
-            obj.transform.position = obj.transform.position * 1000; 
-            objects.Add(obj); 
-        }
-
-        objects = objects.OrderBy(n=>n.transform.position.y).ToList(); 
-
-        StringBuilder sb = new StringBuilder(); 
-        foreach(GameObject obj in objects)
-        {
-            sb.AppendLine($"Sending {obj.name} to {_blockCoordinates[obj.name]}"); 
-            obj.transform.position = _blockCoordinates[obj.name]; 
-            obj.GetComponent<Rigidbody>().useGravity = true; 
-        }
-
-        Debug.Log(sb.ToString());
     }
 
     void UpdateGameCubeVisuals()
@@ -142,12 +113,14 @@ public class RelativeBehavior : MonoBehaviour
         }
     }
 
+
+
     // Update is called once per frame
     void Update()
     {
         if(OVRInput.Get(OVRInput.Button.One))
         {
-            SetToBlockCoordinateCache(); 
+            SceneManager.LoadScene("StylShip_Scene"); //Load scene called Game 
         }
         else
         {
