@@ -8,12 +8,11 @@ using System.Text;
 public class RelativeBehavior : MonoBehaviour
 {
     private Dictionary<string,Vector3> _blockCoordinates = new Dictionary<string,Vector3>(); 
-    private int _counter; 
     private bool _stateIsGood = false; 
+
     // Start is called before the first frame update
     void Start()
     {
-        _counter  = 0; 
         _stateIsGood = false; 
     }
 
@@ -112,8 +111,6 @@ public class RelativeBehavior : MonoBehaviour
             UpdateBlocks(false);
         }
     }
-
-
 
     // Update is called once per frame
     void Update()

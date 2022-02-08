@@ -3904,7 +3904,7 @@ GameObject:
   - component: {fileID: 1273227360}
   - component: {fileID: 1273227361}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: LeftSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4775,7 +4775,7 @@ GameObject:
   - component: {fileID: 1764103490}
   - component: {fileID: 1764103491}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: RightSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
