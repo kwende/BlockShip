@@ -42,7 +42,7 @@ public class RelativeBehavior : MonoBehaviour
     {
         bool looksGood = true; 
 
-        Vector3 centerBlockPosition = GameObject.Find("Cube5").transform.position; 
+        Vector3 centerBlockPosition = GameObject.Find("Cube5").GetComponent<Renderer>().bounds.center; 
         const int CenterIndex = 4; 
         const int CenterX = 1, CenterY = 1; 
 
@@ -54,9 +54,9 @@ public class RelativeBehavior : MonoBehaviour
                 if(index != CenterIndex)
                 {
                     string cubeName = $"Cube{index+1}"; 
-                    GameObject otherBlock = GameObject.Find(cubeName); 
+                    Vector3 otherBlockPosition = GameObject.Find(cubeName).GetComponent<Renderer>().bounds.center; 
 
-                    Vector3 offsetVector = (otherBlock.transform.position - centerBlockPosition); 
+                    Vector3 offsetVector = (otherBlockPosition - centerBlockPosition); 
 
                     // this was just decided experimentally
                     if(offsetVector.magnitude > .6)
@@ -71,25 +71,10 @@ public class RelativeBehavior : MonoBehaviour
 
                         // +z is up, +y is right: I'm thinking x/y for standard cartesian and it
                         // makes more sense in my head
-                        int xActualOffsetSign = (int)Mathf.Sign(offsetVector.z);
-                        int yActualOffsetSign = (int)Mathf.Sign(offsetVector.y); 
+                        int xActualOffsetSign = Mathf.Abs(offsetVector.z) > .12 ? (int)Mathf.Sign(offsetVector.z) : 0;
+                        int yActualOffsetSign = Mathf.Abs(offsetVector.y) > .12 ? (int)Mathf.Sign(offsetVector.y) : 0;
 
-                        if((desiredXOffsetSign != 0 && xActualOffsetSign != desiredXOffsetSign))
-                        {
-                            looksGood = false; 
-                        }
-                        else if(desiredYOffsetSign != 0 && yActualOffsetSign != desiredYOffsetSign)
-                        {
-                            looksGood = false; 
-                        }
-                        else if(desiredYOffsetSign == 0 && Mathf.Abs(offsetVector.y) > .04)
-                        {
-                            looksGood = false; 
-                        }
-                        else if(desiredXOffsetSign == 0 && Mathf.Abs(offsetVector.z) > .04)
-                        {
-                            looksGood = false; 
-                        }
+                        looksGood = (xActualOffsetSign == desiredXOffsetSign) && (yActualOffsetSign == desiredYOffsetSign); 
                     }
                 }
             }
