@@ -1,0 +1,6 @@
+Greetings!
+
+To achieve a better look of your environments, don't forget to use a post processing bevahiour.
+Settings for this scene is in screenshot bellow.
+
+GL, HF
