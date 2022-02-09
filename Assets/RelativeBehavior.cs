@@ -8,15 +8,12 @@ using System.Text;
 public class RelativeBehavior : MonoBehaviour
 {
     private Dictionary<string,Vector3> _blockCoordinates = new Dictionary<string,Vector3>(); 
-    private int _counter; 
     private bool _stateIsGood = false; 
+
     // Start is called before the first frame update
     void Start()
     {
-        _counter  = 0; 
         _stateIsGood = false; 
-
-        UpdateBlockCoordinateCache(); 
     }
 
     private void UpdateBlocks(bool stateIsGood)
@@ -41,38 +38,11 @@ public class RelativeBehavior : MonoBehaviour
         }
     }
 
-    private void SetToBlockCoordinateCache()
-    {
-        List<GameObject> objects = new List<GameObject>(); 
-
-        // enumerate, and get objects out of the way
-        for(int i=1;i<=9;i++)
-        {
-            string cubeName = $"Cube{i}";
-            GameObject obj = GameObject.Find($"Cube{i}"); 
-            obj.GetComponent<Rigidbody>().useGravity = false; 
-            obj.transform.position = obj.transform.position * 1000; 
-            objects.Add(obj); 
-        }
-
-        objects = objects.OrderBy(n=>n.transform.position.y).ToList(); 
-
-        StringBuilder sb = new StringBuilder(); 
-        foreach(GameObject obj in objects)
-        {
-            sb.AppendLine($"Sending {obj.name} to {_blockCoordinates[obj.name]}"); 
-            obj.transform.position = _blockCoordinates[obj.name]; 
-            obj.GetComponent<Rigidbody>().useGravity = true; 
-        }
-
-        Debug.Log(sb.ToString());
-    }
-
     void UpdateGameCubeVisuals()
     {
         bool looksGood = true; 
 
-        Vector3 centerBlockPosition = GameObject.Find("Cube5").transform.position; 
+        Vector3 centerBlockPosition = GameObject.Find("Cube5").GetComponent<Renderer>().bounds.center; 
         const int CenterIndex = 4; 
         const int CenterX = 1, CenterY = 1; 
 
@@ -84,9 +54,9 @@ public class RelativeBehavior : MonoBehaviour
                 if(index != CenterIndex)
                 {
                     string cubeName = $"Cube{index+1}"; 
-                    GameObject otherBlock = GameObject.Find(cubeName); 
+                    Vector3 otherBlockPosition = GameObject.Find(cubeName).GetComponent<Renderer>().bounds.center; 
 
-                    Vector3 offsetVector = (otherBlock.transform.position - centerBlockPosition); 
+                    Vector3 offsetVector = (otherBlockPosition - centerBlockPosition); 
 
                     // this was just decided experimentally
                     if(offsetVector.magnitude > .6)
@@ -101,25 +71,10 @@ public class RelativeBehavior : MonoBehaviour
 
                         // +z is up, +y is right: I'm thinking x/y for standard cartesian and it
                         // makes more sense in my head
-                        int xActualOffsetSign = (int)Mathf.Sign(offsetVector.z);
-                        int yActualOffsetSign = (int)Mathf.Sign(offsetVector.y); 
+                        int xActualOffsetSign = Mathf.Abs(offsetVector.z) > .12 ? (int)Mathf.Sign(offsetVector.z) : 0;
+                        int yActualOffsetSign = Mathf.Abs(offsetVector.y) > .12 ? (int)Mathf.Sign(offsetVector.y) : 0;
 
-                        if((desiredXOffsetSign != 0 && xActualOffsetSign != desiredXOffsetSign))
-                        {
-                            looksGood = false; 
-                        }
-                        else if(desiredYOffsetSign != 0 && yActualOffsetSign != desiredYOffsetSign)
-                        {
-                            looksGood = false; 
-                        }
-                        else if(desiredYOffsetSign == 0 && Mathf.Abs(offsetVector.y) > .04)
-                        {
-                            looksGood = false; 
-                        }
-                        else if(desiredXOffsetSign == 0 && Mathf.Abs(offsetVector.z) > .04)
-                        {
-                            looksGood = false; 
-                        }
+                        looksGood = (xActualOffsetSign == desiredXOffsetSign) && (yActualOffsetSign == desiredYOffsetSign); 
                     }
                 }
             }
@@ -147,7 +102,7 @@ public class RelativeBehavior : MonoBehaviour
     {
         if(OVRInput.Get(OVRInput.Button.One))
         {
-            SetToBlockCoordinateCache(); 
+            SceneManager.LoadScene("StylShip_Scene"); //Load scene called Game 
         }
         else
         {
