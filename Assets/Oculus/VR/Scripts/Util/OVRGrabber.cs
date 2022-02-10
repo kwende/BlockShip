@@ -12,6 +12,7 @@ permissions and limitations under the License.
 
 using System.Collections.Generic;
 using UnityEngine;
+using System; 
 
 /// <summary>
 /// Allows grabbing and throwing of objects with the OVRGrabbable component on them.
@@ -72,6 +73,7 @@ public class OVRGrabber : MonoBehaviour
     protected Quaternion m_grabbedObjectRotOff;
 	protected Dictionary<OVRGrabbable, int> m_grabCandidates = new Dictionary<OVRGrabbable, int>();
 	protected bool m_operatingWithoutOVRCameraRig = true;
+    protected DateTime m_GrabTime = DateTime.MinValue; 
 
     /// <summary>
     /// The currently grabbed object.
@@ -133,9 +135,19 @@ public class OVRGrabber : MonoBehaviour
 	// visible artifacts.
     virtual public void Update()
     {
+        DateTime now = DateTime.Now;
+
 		if (m_operatingWithoutOVRCameraRig)
         {
 		    OnUpdatedAnchors();
+        }
+
+        if(m_GrabTime != DateTime.MinValue && 
+            (now - m_GrabTime).TotalMilliseconds >= 200)
+        {
+            m_GrabTime = DateTime.MinValue; 
+            OVRInput.SetControllerVibration(0, 0, 
+                gameObject.name == "RightHandAnchor" ? OVRInput.Controller.RTouch: OVRInput.Controller.LTouch);
         }
 	}
 
@@ -228,6 +240,10 @@ public class OVRGrabber : MonoBehaviour
         float closestMagSq = float.MaxValue;
 		OVRGrabbable closestGrabbable = null;
         Collider closestGrabbableCollider = null;
+
+        OVRInput.SetControllerVibration(1, 1, 
+            gameObject.name == "RightHandAnchor" ? OVRInput.Controller.RTouch: OVRInput.Controller.LTouch);
+        m_GrabTime = DateTime.Now; 
 
         // Iterate grab candidates and find the closest grabbable candidate
 		foreach (OVRGrabbable grabbable in m_grabCandidates.Keys)

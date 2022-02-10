@@ -1,0 +1,113 @@
+fileFormatVersion: 2
+guid: fcac956cf90328d46977cba92266f6cb
+timeCreated: 1508424547
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Bandana_low
+    100002: Eye_Patch_Elements_low
+    100004: Eye_patch_Out_low
+    100006: Jaw_low
+    100008: Lower_Teeth_low
+    100010: //RootNode
+    100012: Skull_02_low
+    100014: Straps_low
+    100016: Upper_Teeth_low
+    400000: Bandana_low
+    400002: Eye_Patch_Elements_low
+    400004: Eye_patch_Out_low
+    400006: Jaw_low
+    400008: Lower_Teeth_low
+    400010: //RootNode
+    400012: Skull_02_low
+    400014: Straps_low
+    400016: Upper_Teeth_low
+    2300000: Bandana_low
+    2300002: Eye_Patch_Elements_low
+    2300004: Eye_patch_Out_low
+    2300006: Jaw_low
+    2300008: Lower_Teeth_low
+    2300010: Skull_02_low
+    2300012: Straps_low
+    2300014: Upper_Teeth_low
+    3300000: Bandana_low
+    3300002: Eye_Patch_Elements_low
+    3300004: Eye_patch_Out_low
+    3300006: Jaw_low
+    3300008: Lower_Teeth_low
+    3300010: Skull_02_low
+    3300012: Straps_low
+    3300014: Upper_Teeth_low
+    4300000: Eye_patch_Out_low
+    4300002: Straps_low
+    4300004: Upper_Teeth_low
+    4300006: Lower_Teeth_low
+    4300008: Bandana_low
+    4300010: Skull_02_low
+    4300012: Jaw_low
+    4300014: Eye_Patch_Elements_low
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 2
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
